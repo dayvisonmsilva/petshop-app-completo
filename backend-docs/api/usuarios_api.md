@@ -5,10 +5,7 @@ Esta API permite realizar operações CRUD (Criar, Ler, Atualizar, Deletar) para
 **URL Base:**
 
 A URL base para todos os endpoints da API é:
-`https://<seu-id-da-api>.execute-api.<sua-regiao>.amazonaws.com/<seu-estagio>`
-
-Por exemplo, se o ID da sua API for `abcdef123`, sua região for `us-east-1` e seu estágio for `dev`, a URL base será:
-`https://abcdef123.execute-api.us-east-1.amazonaws.com/dev`
+`https://fpbycte831.execute-api.us-east-1.amazonaws.com/dev/usuarios`
 
 **Autenticação:**
 
@@ -29,7 +26,7 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
 ### 1. Criar Usuário
 
 * **Método:** `POST`
-* **Path:** `/usuarios`
+* **Path:** `/usuarios` (relativo à URL Base, ex: `https://fpbycte831.execute-api.us-east-1.amazonaws.com/dev/usuarios`)
 * **Descrição:** Cria um novo usuário no sistema.
 * **Corpo da Requisição (`application/json`):**
     ```json
@@ -60,7 +57,6 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
     * `400 Bad Request`: Campos obrigatórios ausentes ou `tipoUsuario` inválido.
         ```json
         {"error": "Campos obrigatórios ausentes: nome"}
-        ```
         ```json
         {"error": "tipoUsuario inválido. Deve ser \"Administrador\" ou \"Funcionario\"."}
         ```
@@ -70,7 +66,7 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
 ### 2. Listar Todos os Usuários
 
 * **Método:** `GET`
-* **Path:** `/usuarios`
+* **Path:** `/usuarios` (relativo à URL Base)
 * **Descrição:** Retorna uma lista de todos os usuários cadastrados.
 * **Corpo da Requisição:** Nenhum.
 * **Resposta de Sucesso:**
@@ -103,7 +99,7 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
 ### 3. Obter Usuário por ID
 
 * **Método:** `GET`
-* **Path:** `/usuarios/{id}`
+* **Path:** `/usuarios/{id}` (relativo à URL Base)
 * **Descrição:** Retorna os detalhes de um usuário específico com base no seu ID.
 * **Parâmetros de Caminho:**
     * `id` (String, Obrigatório): O ID (UUID) do usuário a ser recuperado.
@@ -132,7 +128,7 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
 ### 4. Atualizar Usuário
 
 * **Método:** `PUT`
-* **Path:** `/usuarios/{id}`
+* **Path:** `/usuarios/{id}` (relativo à URL Base)
 * **Descrição:** Atualiza os dados de um usuário existente. Apenas os campos fornecidos no corpo da requisição serão atualizados. O `id` não pode ser alterado.
 * **Parâmetros de Caminho:**
     * `id` (String, Obrigatório): O ID (UUID) do usuário a ser atualizado.
@@ -168,7 +164,7 @@ No estado atual, o campo `senha` é armazenado como texto plano. Em um ambiente 
 ### 5. Deletar Usuário
 
 * **Método:** `DELETE`
-* **Path:** `/usuarios/{id}`
+* **Path:** `/usuarios/{id}` (relativo à URL Base)
 * **Descrição:** Remove um usuário do sistema com base no seu ID.
 * **Parâmetros de Caminho:**
     * `id` (String, Obrigatório): O ID (UUID) do usuário a ser deletado.
