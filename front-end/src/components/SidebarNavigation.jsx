@@ -50,13 +50,13 @@ const SidebarNavigation = () => {
             </li>
             <li className="nav-item mb-2">
               <NavLink to="/clients" className={({ isActive }) => "nav-link text-white" + (isActive ? " bg-primary rounded" : "")}>
-                <i className="bi bi-person-lines-fill me-2"></i>Gerenciamento de Clientes (WIP)
+                <i className="bi bi-person-lines-fill me-2"></i>Gerenciamento de Clientes
               </NavLink>
             </li>
             {/* os Pets são gerenciados a partir da pagina de clientes */}
             <li className="nav-item mb-2">
               <NavLink to="/appointments" className={({ isActive }) => "nav-link text-white" + (isActive ? " bg-primary rounded" : "")}>
-                <i className="bi bi-calendar-check me-2"></i>Agendamentos (WIP)
+                <i className="bi bi-calendar-check me-2"></i>Agendamentos
               </NavLink>
             </li>
           </>

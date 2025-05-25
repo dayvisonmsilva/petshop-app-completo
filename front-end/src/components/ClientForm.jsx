@@ -4,7 +4,6 @@ import { createClient, updateClient } from '../services/api';
 const ClientForm = ({ initialData, onSubmit, onCancel }) => {
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [email, setEmail] = useState('');
   const [endereco, setEndereco] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -15,13 +14,11 @@ const ClientForm = ({ initialData, onSubmit, onCancel }) => {
       setIsEditMode(true);
       setNome(initialData.nome || '');
       setTelefone(initialData.telefone || '');
-      setEmail(initialData.email || '');
       setEndereco(initialData.endereco || '');
     } else {
       setIsEditMode(false);
       setNome('');
       setTelefone('');
-      setEmail('');
       setEndereco('');
     }
   }, [initialData]);
@@ -37,16 +34,10 @@ const ClientForm = ({ initialData, onSubmit, onCancel }) => {
       setLoading(false);
       return;
     }
-    if (email && !/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-      setError('Formato de email inválido.');
-      setLoading(false);
-      return;
-    }
 
     const clientData = {
       nome,
       telefone,
-      email,
       endereco,
     };
 
@@ -91,16 +82,6 @@ const ClientForm = ({ initialData, onSubmit, onCancel }) => {
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
             required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email (Opcional)</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-3">

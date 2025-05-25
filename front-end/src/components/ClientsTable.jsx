@@ -21,7 +21,6 @@ const ClientsTable = ({ clients, onEdit, onDelete }) => {
             <tr>
               <th>Nome</th>
               <th>Telefone</th>
-              <th>Email</th>
               <th>Endereço</th>
               <th>Nº de Pets</th>
               <th>Ações</th>
@@ -32,9 +31,8 @@ const ClientsTable = ({ clients, onEdit, onDelete }) => {
               <tr key={client.id}>
                 <td>{client.nome}</td>
                 <td>{client.telefone || '-'}</td>
-                <td>{client.email || '-'}</td>
                 <td>{client.endereco || '-'}</td>
-                <td>{client.numPets || '0'}</td> {/* Modificacao posterior apos a integração da API */}
+                <td>{client.numPets || '0'}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-info text-white me-2"
@@ -71,7 +69,7 @@ const ClientsTable = ({ clients, onEdit, onDelete }) => {
         </table>
       ) : (
         <div className="alert alert-info" role="alert">
-          Nenhum cliente cadastrado (WIP).
+          Nenhum cliente cadastrado.
         </div>
       )}
     </div>

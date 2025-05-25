@@ -102,6 +102,7 @@ function App() {
 
             {/* Rotas para Agendamentos (Funcionario only) */}
             <Route path="/appointments/new" element={<ProtectedRoute allowedRoles={['Funcionario']}><NewAppointmentPage /></ProtectedRoute>} />
+            <Route path="/appointments/edit/:appointmentId" element={<ProtectedRoute allowedRoles={['Funcionario']}><NewAppointmentPage /></ProtectedRoute>} />
             <Route path="/appointments" element={<ProtectedRoute allowedRoles={['Funcionario']}><AppointmentHistoryPage /></ProtectedRoute>} />
           </Route>
 

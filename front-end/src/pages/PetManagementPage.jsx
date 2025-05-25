@@ -14,34 +14,35 @@ const PetManagementPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const fetchPetsAndClient = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (clientId) {
+        const clientData = await getClientById(clientId);
+        if (clientData && clientData.nome) {
+          setClientName(clientData.nome);
+          console.log('PetManagementPage: Fetched client name:', clientData.nome);
+        } else {
+          setClientName('Cliente [ID: ' + clientId + ']');
+          console.warn('PetManagementPage: Client data not found for ID:', clientId);
+        }
+        const petsData = await getPetsByClientId(clientId);
+        setPets(petsData);
+      } else {
+        setError('ID do cliente não fornecido na URL para gerenciamento de pets.');
+        console.error('PetManagementPage: Client ID is null or undefined.');
+      }
+    } catch (err) {
+      setError('Erro ao carregar pets ou dados do cliente (WIP).');
+      console.error('Failed to fetch pets or client data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     console.log('PetManagementPage: Component Mounted. Client ID from URL params:', clientId);
-    const fetchPetsAndClient = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        if (clientId) {
-          const clientData = await getClientById(clientId);
-          if (clientData && clientData.nome) {
-            setClientName(clientData.nome);
-            console.log('PetManagementPage: Fetched client name:', clientData.nome);
-          } else {
-            setClientName('Cliente [ID: ' + clientId + ']');
-            console.warn('PetManagementPage: Client data not found for ID:', clientId);
-          }
-          const petsData = await getPetsByClientId(clientId);
-          setPets(petsData);
-        } else {
-          setError('ID do cliente não fornecido na URL para gerenciamento de pets.');
-          console.error('PetManagementPage: Client ID is null or undefined.');
-        }
-    } catch (err) {
-        setError('Erro ao carregar pets ou dados do cliente (WIP).');
-        console.error('Failed to fetch pets or client data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPetsAndClient();
   }, [clientId]);
 
@@ -79,10 +80,10 @@ const PetManagementPage = () => {
 
   return (
     <div className="pet-management-page">
-      <h1 className="mb-4">Gerenciamento de Pets de {clientName} (WIP)</h1>
+      <h1 className="mb-4">Gerenciamento de Pets de {clientName}</h1>
       
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
-      {loading && <div className="alert alert-info">Carregando pets (WIP)...</div>}
+      {loading && <div className="alert alert-info">Carregando pets...</div>}
 
       {!showForm && (
         <div className="mb-4">

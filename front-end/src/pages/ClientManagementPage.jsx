@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getClients, deleteClient } from '../services/api';
+import { getClients, deleteClient, getPetsByClientId } from '../services/api';
 import ClientsTable from '../components/ClientsTable';
 import ClientForm from '../components/ClientForm';
 
@@ -15,9 +15,20 @@ const ClientManagementPage = () => {
     setError(null);
     try {
       const data = await getClients();
-      setClients(data);
+      // Para cada cliente, buscar o número de pets
+      const clientsWithPets = await Promise.all(
+        data.map(async (client) => {
+          try {
+            const pets = await getPetsByClientId(client.id);
+            return { ...client, numPets: pets.length };
+          } catch (e) {
+            return { ...client, numPets: 0 };
+          }
+        })
+      );
+      setClients(clientsWithPets);
     } catch (err) {
-      setError('Erro ao carregar clientes (WIP).');
+      setError('Erro ao carregar clientes.');
       console.error('Failed to fetch clients:', err);
     } finally {
       setLoading(false);
@@ -44,7 +55,7 @@ const ClientManagementPage = () => {
         await deleteClient(id);
         fetchClients(); 
       } catch (err) {
-        setError('Erro ao excluir cliente (WIP).');
+        setError('Erro ao excluir cliente.');
         console.error('Failed to delete client:', err);
       }
     }
@@ -62,10 +73,10 @@ const ClientManagementPage = () => {
 
   return (
     <div className="client-management-page">
-      <h1 className="mb-4">Gerenciamento de Clientes (WIP)</h1>
+      <h1 className="mb-4">Gerenciamento de Clientes</h1>
       
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
-      {loading && <div className="alert alert-info">Carregando clientes (WIP)...</div>}
+      {loading && <div className="alert alert-info">Carregando clientes...</div>}
 
       {!showForm && (
         <div className="mb-4">

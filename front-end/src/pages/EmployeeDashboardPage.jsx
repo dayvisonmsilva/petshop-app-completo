@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import MetricCard from '../components/MetricCard';
-import { getClients, getPetsByClientId } from '../services/api'; 
+import { getClients, getPetsByClientId, getPets } from '../services/api'; 
 
 const EmployeeDashboardPage = () => {
   const { user } = useAuth();
@@ -28,25 +28,18 @@ const EmployeeDashboardPage = () => {
       setLoadingMetrics(true);
       setMetricsError(null);
       try {
-        // Fetch Total Clients (using placeholder API for now)
+        // Fetch Total Clients
         const clientsData = await getClients();
         setTotalClients(clientsData.length);
-        console.log('EmployeeDashboardPage: Total Clients fetched (WIP):', clientsData.length);
+        console.log('EmployeeDashboardPage: Total Clients fetched:', clientsData.length);
 
-        // Total Pets (será obtido se getPets estiver disponível, por enquanto baseado em clientes de placeholder)
-        // Esta lógica precisa ser refinada quando getPets ou contagens de pets por cliente estiverem disponíveis.
-        // Para fins de demonstração, permanece '--' como getPetsByClientId requer um ID de cliente.
-        let petsCount = 0;
-        // if (clientsData && clientsData.length > 0) {
-        //   // Issaqui requer iterar por todos os clientes e obter seus pets,
-        //   // o que é ineficiente. Um API dedicado para contagem total de pets seria melhor.
-        //   // Por enquanto, permanecerá como '--'.
-        // }
-        setTotalPets(petsCount);
-        console.log('EmployeeDashboardPage: Total Pets (WIP):', petsCount);
+        // Fetch Total Pets
+        const petsData = await getPets();
+        setTotalPets(petsData.length);
+        console.log('EmployeeDashboardPage: Total Pets:', petsData.length);
 
       } catch (err) {
-        setMetricsError('Erro ao carregar métricas do dashboard de funcionário (WIP).');
+        setMetricsError('Erro ao carregar métricas do dashboard de funcionário.');
         console.error('EmployeeDashboardPage: Failed to fetch dashboard metrics:', err);
       } finally {
         setLoadingMetrics(false);
@@ -58,7 +51,7 @@ const EmployeeDashboardPage = () => {
 
   const employeeMetrics = [
     { label: 'Total de Clientes', value: loadingMetrics ? 'Carregando...' : totalClients, icon: 'bi-person-lines-fill' },
-    { label: 'Total de Pets (WIP)', value: loadingMetrics ? 'Carregando...' : totalPets, icon: 'bi-grid-fill' },
+    { label: 'Total de Pets', value: loadingMetrics ? 'Carregando...' : totalPets, icon: 'bi-grid-fill' },
     { label: 'Próximos Agendamentos (WIP)', value: '--', icon: 'bi-calendar-event' },
   ];
 
@@ -88,7 +81,7 @@ const EmployeeDashboardPage = () => {
             <i className="bi bi-person-plus me-2"></i>Adicionar Novo Cliente
           </button>
           <button onClick={() => navigate('/appointments/new')} className="btn btn-primary btn-lg d-flex align-items-center">
-            <i className="bi bi-calendar-plus me-2"></i>Agendar Serviço (WIP)
+            <i className="bi bi-calendar-plus me-2"></i>Agendar Serviço
           </button>
         </div>
       </div>

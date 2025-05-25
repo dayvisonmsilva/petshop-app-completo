@@ -175,100 +175,204 @@ export const deleteUser = async (id) => {
   }
 };
 
-// Client API Calls (Placeholders - API not yet implemented)
+// Client API Calls
 export const getClients = async () => {
-  console.log('API: Attempting to fetch clients (placeholder)...');
-  return []; // Return empty array for now
+  console.log('Attempting to fetch clients from API...');
+  try {
+    const response = await axios.get(API_BASE_URLS.clientes);
+    console.log('Clients fetched successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching clients:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const createClient = async (clientData) => {
-  console.log('API: Attempting to create client (placeholder):', clientData);
+  console.log('Attempting to create client:', clientData);
   try {
-    // Simulate API call and response
-    const mockResponse = { id: 'mock-client-id-' + Math.random().toString(36).substring(7), ...clientData };
-    console.log('API: Mock Client created successfully:', mockResponse);
-    return mockResponse;
+    const response = await axios.post(API_BASE_URLS.clientes, clientData);
+    console.log('Client created successfully:', response.data);
+    return response.data;
   } catch (error) {
-    console.error('API: Error creating client (placeholder):', error.response ? error.response.data : error.message);
+    console.error('Error creating client:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
 export const getClientById = async (id) => {
-  console.log('API: Attempting to fetch client by ID (placeholder):', id);
-  // Return a mock client if needed for testing edit forms
-  return { id, nome: 'Mock Client', telefone: '11999999999', email: 'mock@example.com', endereco: 'Rua Mock, 123' };
+  console.log('Attempting to fetch client by ID:', id);
+  try {
+    const response = await axios.get(`${API_BASE_URLS.clientes}/${id}`);
+    console.log('Client fetched successfully by ID:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching client by ID:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const updateClient = async (id, clientData) => {
-  console.log('API: Attempting to update client (placeholder):', id, clientData);
-  return { id, ...clientData }; // Mock response
+  console.log('Attempting to update client:', id, clientData);
+  try {
+    const response = await axios.put(`${API_BASE_URLS.clientes}/${id}`, clientData);
+    console.log('Client updated successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating client:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const deleteClient = async (id) => {
-  console.log('API: Attempting to delete client (placeholder):', id);
-  return {}; // Mock response
+  console.log('Attempting to delete client:', id);
+  try {
+    const response = await axios.delete(`${API_BASE_URLS.clientes}/${id}`);
+    console.log('Client deleted successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting client:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 // Pet API Calls
 export const getPetsByClientId = async (clientId) => {
-  console.log('API: Attempting to fetch pets for client ID:', clientId);
-  // Mock data for pets by client
-  if (clientId === 'mock-client-id-abc') { // Example for a specific client
-    return [
-      { id: 'pet1', nome: 'Rex', idade: 5, raca: 'Golden Retriever', clienteId: clientId },
-      { id: 'pet2', nome: 'Mia', idade: 2, raca: 'Siamese', clienteId: clientId },
-    ];
+  console.log('Attempting to fetch pets for client ID:', clientId);
+  try {
+    const response = await axios.get(`${API_BASE_URLS.pets}?clienteId=${clientId}`);
+    console.log('Pets fetched successfully for client:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching pets for client:', error.response ? error.response.data : error.message);
+    throw error;
   }
-  console.log('API: No pets found for client ID:', clientId);
-  return [];
 };
 
 export const createPet = async (petData) => {
-  console.log('API: Attempting to create pet:', petData);
-  return { id: 'mock-pet-id-' + Math.random().toString(36).substring(7), ...petData };
+  console.log('Attempting to create pet:', petData);
+  try {
+    const response = await axios.post(API_BASE_URLS.pets, petData);
+    console.log('Pet created successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating pet:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const getPetById = async (id) => {
-  console.log('API: Attempting to fetch pet by ID:', id);
-  // Example mock pet
-  return { id, nome: 'Mock Pet', idade: 3, raca: 'Mixed', clienteId: 'mock-client-id' };
+  console.log('Attempting to fetch pet by ID:', id);
+  try {
+    const response = await axios.get(`${API_BASE_URLS.pets}/${id}`);
+    console.log('Pet fetched successfully by ID:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching pet by ID:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const updatePet = async (id, petData) => {
-  console.log('API: Attempting to update pet:', id, petData);
-  return { id, ...petData };
+  console.log('Attempting to update pet:', id, petData);
+  try {
+    const response = await axios.put(`${API_BASE_URLS.pets}/${id}`, petData);
+    console.log('Pet updated successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating pet:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const deletePet = async (id) => {
-  console.log('API: Attempting to delete pet:', id);
-  return {};
+  console.log('Attempting to delete pet:', id);
+  try {
+    const response = await axios.delete(`${API_BASE_URLS.pets}/${id}`);
+    console.log('Pet deleted successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting pet:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const getPets = async () => {
+  console.log('Attempting to fetch all pets from API...');
+  try {
+    const response = await axios.get(API_BASE_URLS.pets);
+    console.log('All pets fetched successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all pets:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 // Appointment API Calls (Placeholders - API not yet provided)
+const AGENDAMENTOS_BASE_URL = 'https://ba0wpj4u21.execute-api.us-east-1.amazonaws.com/dev/agendamentos';
+
 export const getAppointments = async (filters = {}) => {
-  console.log('API: Attempting to fetch appointments (placeholder) with filters:', filters);
-  return []; // Mock response
+  console.log('Attempting to fetch appointments from API with filters:', filters);
+  try {
+    const params = new URLSearchParams(filters).toString();
+    const url = params ? `${AGENDAMENTOS_BASE_URL}?${params}` : AGENDAMENTOS_BASE_URL;
+    const response = await axios.get(url);
+    console.log('Appointments fetched successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching appointments:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const createAppointment = async (appointmentData) => {
-  console.log('API: Attempting to create appointment (placeholder):', appointmentData);
-  return { id: 'mock-appt-id-' + Math.random().toString(36).substring(7), ...appointmentData };
+  console.log('Attempting to create appointment:', appointmentData);
+  try {
+    const response = await axios.post(AGENDAMENTOS_BASE_URL, appointmentData);
+    console.log('Appointment created successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating appointment:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const getAppointmentById = async (id) => {
-  console.log('API: Attempting to fetch appointment by ID (placeholder):', id);
-  return null; // Mock response
+  console.log('Attempting to fetch appointment by ID:', id);
+  try {
+    const response = await axios.get(`${AGENDAMENTOS_BASE_URL}/${id}`);
+    console.log('Appointment fetched successfully by ID:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching appointment by ID:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const updateAppointment = async (id, appointmentData) => {
-  console.log('API: Attempting to update appointment (placeholder):', id, appointmentData);
-  return { id, ...appointmentData };
+  console.log('Attempting to update appointment:', id, appointmentData);
+  try {
+    const response = await axios.put(`${AGENDAMENTOS_BASE_URL}/${id}`, appointmentData);
+    console.log('Appointment updated successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating appointment:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const cancelAppointment = async (id) => {
-  console.log('API: Attempting to cancel appointment (placeholder):', id);
-  return {}; // Mock response
+  console.log('Attempting to cancel appointment:', id);
+  try {
+    // O cancelamento é feito via update de status para CANCELADO_CLIENTE ou CANCELADO_PETSHOP
+    const response = await axios.put(`${AGENDAMENTOS_BASE_URL}/${id}`, { status: 'CANCELADO_CLIENTE' });
+    console.log('Appointment cancelled successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error cancelling appointment:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export default api;

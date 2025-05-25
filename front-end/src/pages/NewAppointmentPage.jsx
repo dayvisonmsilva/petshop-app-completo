@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { getClients, getPetsByClientId, getServices, createAppointment, getAppointmentById, updateAppointment } from '../services/api'; // Import getAppointmentById and updateAppointment
+import { getClients, getPetsByClientId, getServices, createAppointment, getAppointmentById, updateAppointment, getUsers } from '../services/api'; // Import getAppointmentById and updateAppointment
+import { useAuth } from '../context/AuthContext';
 
 const NewAppointmentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { appointmentId } = useParams();
+  const { user } = useAuth();
 
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState('');
@@ -15,8 +17,8 @@ const NewAppointmentPage = () => {
   const [selectedService, setSelectedService] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
   const [appointmentTime, setAppointmentTime] = useState('');
-  // const [professionals, setProfessionals] = useState([]); // If API supports it
-  // const [selectedProfessional, setSelectedProfessional] = useState('');
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState('');
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,19 +33,29 @@ const NewAppointmentPage = () => {
         try {
           const appointmentData = await getAppointmentById(appointmentId);
           if (appointmentData) {
-            setSelectedClient(appointmentData.clientId || '');
+            setSelectedClient(appointmentData.clienteId || '');
             setSelectedPet(appointmentData.petId || '');
-            setSelectedService(appointmentData.serviceId || '');
-            setAppointmentDate(appointmentData.date || '');
-            setAppointmentTime(appointmentData.time || '');
-
-            if (appointmentData.clientId) {
-              const petsData = await getPetsByClientId(appointmentData.clientId);
+            setSelectedService(appointmentData.servicoId || '');
+            if (appointmentData.dataHora) {
+              const [date, timeWithZone] = appointmentData.dataHora.split('T');
+              setAppointmentDate(date);
+              setAppointmentTime(timeWithZone ? timeWithZone.substring(0,5) : '');
+            } else {
+              setAppointmentDate('');
+              setAppointmentTime('');
+            }
+            setSelectedEmployee(''); // Não temos o id do funcionário, apenas o nome
+            if (appointmentData.colaboradorAlocado && employees.length > 0) {
+              const found = employees.find(e => e.nome === appointmentData.colaboradorAlocado);
+              if (found) setSelectedEmployee(found.id);
+            }
+            if (appointmentData.clienteId) {
+              const petsData = await getPetsByClientId(appointmentData.clienteId);
               setPets(petsData);
             }
           }
         } catch (err) {
-          setError('Erro ao carregar dados do agendamento para edição (WIP).');
+          setError('Erro ao carregar dados do agendamento para edição.');
           console.error('Failed to fetch appointment for edit:', err);
         }
       }
@@ -59,6 +71,11 @@ const NewAppointmentPage = () => {
         const servicesData = await getServices();
         setServices(servicesData);
 
+        // Buscar funcionários
+        const usersData = await getUsers();
+        const employeesList = usersData.filter(u => u.tipoUsuario === 'Funcionario');
+        setEmployees(employeesList);
+
         if (location.state && location.state.clientId) {
           setSelectedClient(location.state.clientId);
           const petsData = await getPetsByClientId(location.state.clientId);
@@ -68,7 +85,7 @@ const NewAppointmentPage = () => {
         await fetchAppointmentData();
 
       } catch (err) {
-        setError('Erro ao carregar dados iniciais (clientes, serviços) (WIP).');
+        setError('Erro ao carregar dados iniciais. Verifique sua conexão ou tente novamente.');
         console.error('Failed to fetch initial data:', err);
       } finally {
         setLoading(false);
@@ -108,20 +125,21 @@ const NewAppointmentPage = () => {
     setError(null);
     setSubmitting(true);
 
-    if (!selectedClient || !selectedPet || !selectedService || !appointmentDate || !appointmentTime) {
+    if (!selectedClient || !selectedPet || !selectedService || !appointmentDate || !appointmentTime || !selectedEmployee) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       setSubmitting(false);
       return;
     }
 
+    // Montar dataHora no formato ISO 8601 (YYYY-MM-DDTHH:MM:SS-03:00)
+    const dataHora = `${appointmentDate}T${appointmentTime}:00-03:00`;
+
     const appointmentData = {
-      clientId: selectedClient,
+      clienteId: selectedClient,
       petId: selectedPet,
-      serviceId: selectedService,
-      date: appointmentDate,
-      time: appointmentTime,
-      // professionalId: selectedProfessional, // Add if professional selection is implemented
-      status: isEditMode ? 'Pendente' : 'Pendente', // Keep status for now, adjust based on API
+      servicoId: selectedService,
+      dataHora,
+      colaboradorAlocado: employees.find(e => e.id === selectedEmployee)?.nome || 'Colaborador',
     };
 
     try {
@@ -134,7 +152,7 @@ const NewAppointmentPage = () => {
       }
       navigate('/appointments'); 
     } catch (err) {
-      setError(isEditMode ? 'Erro ao atualizar agendamento (WIP).' : 'Erro ao agendar serviço (WIP).');
+      setError(isEditMode ? 'Erro ao atualizar agendamento.' : 'Erro ao agendar serviço.');
       console.error('Failed to save appointment:', err);
     } finally {
       setSubmitting(false);
@@ -235,15 +253,18 @@ const NewAppointmentPage = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="professionalSelect" className="form-label">Selecionar Profissional (WIP)</label>
+              <label htmlFor="employeeSelect" className="form-label">Selecionar Funcionário Responsável</label>
               <select
                 className="form-select"
-                id="professionalSelect"
-                value={''} // Placeholder for professional
-                onChange={() => {}} // Placeholder
-                disabled // Disabled until API is available
+                id="employeeSelect"
+                value={selectedEmployee}
+                onChange={e => setSelectedEmployee(e.target.value)}
+                required
               >
-                <option value="">-- Selecione um Profissional (WIP) --</option>
+                <option value="">-- Selecione um Funcionário --</option>
+                {employees.map(emp => (
+                  <option key={emp.id} value={emp.id}>{emp.nome} ({emp.tipoUsuario})</option>
+                ))}
               </select>
             </div>
 
