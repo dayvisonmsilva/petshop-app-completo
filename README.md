@@ -9,8 +9,6 @@ Este repositório apresenta o desenvolvimento completo do Sistema de Gerenciamen
 
 O projeto contempla um frontend desenvolvido com React e um backend baseado em arquitetura serverless na AWS, utilizando API Gateway, AWS Lambda e DynamoDB. Todo o desenvolvimento foi orientado pela aplicação da metodologia Rational Unified Process (RUP), permitindo uma abordagem estruturada, incremental e iterativa.
 
-O objetivo do sistema é automatizar e otimizar os processos operacionais de petshops, abrangendo o controle de clientes, pets, serviços e agendamentos, além de oferecer interfaces diferenciadas para os perfis de administradores e funcionários, visando maior eficiência, organização e gestão dos serviços.
-
 ---
 
 ## 📜 Visão Geral do Projeto
