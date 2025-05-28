@@ -69,7 +69,7 @@ const LoginForm = () => {
           />
           <button
             type="button"
-            className="btn btn-outline-secondary border-start-0" style={{borderRadius: '0 8px 8px 0'}}
+            className="btn border-start-0" style={{borderRadius: '0 8px 8px 0', borderColor: '#ced4da', background: 'white'}}
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? '🙈' : '👁️'}

@@ -269,6 +269,16 @@ const NewAppointmentPage = () => {
             </div>
 
             <div className="d-flex justify-content-end mt-4">
+              {isEditMode && (
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-lg me-2"
+                  onClick={() => navigate('/appointments')}
+                  disabled={submitting}
+                >
+                  Cancelar Edição
+                </button>
+              )}
               <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
                 {submitting ? (isEditMode ? 'Atualizando...' : 'Agendando...') : (isEditMode ? 'Salvar Alterações' : 'Confirmar Agendamento')}
               </button>
