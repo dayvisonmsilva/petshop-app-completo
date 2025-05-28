@@ -5,11 +5,11 @@
 ![Badge de Tecnologia Frontend](https://img.shields.io/badge/frontend-React-blue)
 ![Badge de Tecnologia Backend](https://img.shields.io/badge/backend-AWS%20Serverless-orange)
 
-## Descrição
+Este repositório apresenta o desenvolvimento completo do Sistema de Gerenciamento para PetShops, elaborado no contexto da disciplina de Processo de Software do curso Interdisciplinar em Tecnologia da Informação da Universidade Federal Rural do Semi-Árido (UFERSA) — Campus Pau dos Ferros.
 
-Este repositório contém o projeto completo do **Sistema de Gerenciamento para PetShops**, desenvolvido como parte da disciplina de **Processo de Software** do curso Interdisciplinar em Tecnologia da Informação da Universidade Federal Rural do Semi-Árido (UFERSA) - Campus Pau dos Ferros. O projeto engloba um frontend desenvolvido em React e um backend serverless utilizando tecnologias AWS (API Gateway, Lambda e DynamoDB), com foco na aplicação da metodologia **Rational Unified Process (RUP)**.
+O projeto contempla um frontend desenvolvido com React e um backend baseado em arquitetura serverless na AWS, utilizando API Gateway, AWS Lambda e DynamoDB. Todo o desenvolvimento foi orientado pela aplicação da metodologia Rational Unified Process (RUP), permitindo uma abordagem estruturada, incremental e iterativa.
 
-O sistema visa automatizar e otimizar os processos diários de um petshop, incluindo o gerenciamento de clientes, pets, serviços e agendamentos, oferecendo interfaces distintas para administradores e funcionários.
+O objetivo do sistema é automatizar e otimizar os processos operacionais de petshops, abrangendo o controle de clientes, pets, serviços e agendamentos, além de oferecer interfaces diferenciadas para os perfis de administradores e funcionários, visando maior eficiência, organização e gestão dos serviços.
 
 ---
 
